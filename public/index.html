@@ -64,6 +64,9 @@
                     <li>
                       <a href="#price">价格</a>
                     </li>
+                    <li>
+                      <a href="/index.php">立即体验</a>
+                    </li>
                     <!--
                     <li>
                       <a href="#contact">Contact Us</a>
@@ -313,7 +316,7 @@
       <div class="container">
         <div class="footer-content">
           <p>
-            Powered by <a href="https://github.com/define9/v2board-sparrow">v2board-sparrow</a> © The theme by <a href="https://github.com/define9">define9</a>
+            Powered by V2board © The theme by <a href="https://github.com/define9">define9</a>
           </p>
         </div>
       </div>
@@ -380,7 +383,7 @@
           let unit = getInfo(good)
           console.log(unit)
           good['unit'] = unit[0]
-          good['price']= (unit[1] / 100.).toFixed(2)
+          good['price'] = (unit[1] / 100.).toFixed(2)
         })
       })
     },

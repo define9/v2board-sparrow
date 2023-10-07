@@ -70,23 +70,27 @@ class V2boardInstall extends Command
             } catch (\Exception $e) {
                 abort(500, '数据库连接失败');
             }
-            $file = \File::get(base_path() . '/database/install.sql');
-            if (!$file) {
-                abort(500, '数据库文件不存在');
-            }
-            $sql = str_replace("\n", "", $file);
-            $sql = preg_split("/;/", $sql);
-            if (!is_array($sql)) {
-                abort(500, '数据库文件格式有误');
-            }
-            $this->info('正在导入数据库请稍等...');
-            foreach ($sql as $item) {
-                try {
-                    DB::select(DB::raw($item));
-                } catch (\Exception $e) {
+            
+            if($this->ask('初始化数据库?(y or n) default: n', 'n') == 'y')
+            {
+                $file = \File::get(base_path() . '/database/install.sql');
+                if (!$file) {
+                    abort(500, '数据库文件不存在');
                 }
+                $sql = str_replace("\n", "", $file);
+                $sql = preg_split("/;/", $sql);
+                if (!is_array($sql)) {
+                    abort(500, '数据库文件格式有误');
+                }
+                $this->info('正在导入数据库请稍等...');
+                foreach ($sql as $item) {
+                    try {
+                        DB::select(DB::raw($item));
+                    } catch (\Exception $e) {
+                    }
+                }
+                $this->info('数据库导入完成');
             }
-            $this->info('数据库导入完成');
             $email = '';
             while (!$email) {
                 $email = $this->ask('请输入管理员邮箱?');
