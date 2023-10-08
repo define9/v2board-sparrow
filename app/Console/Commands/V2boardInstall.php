@@ -90,19 +90,24 @@ class V2boardInstall extends Command
                     }
                 }
                 $this->info('数据库导入完成');
-            }
-            $email = '';
-            while (!$email) {
-                $email = $this->ask('请输入管理员邮箱?');
-            }
-            $password = Helper::guid(false);
-            if (!$this->registerAdmin($email, $password)) {
-                abort(500, '管理员账号注册失败，请重试');
+            } else {
+                $this->info('跳过初始化数据库');
             }
 
-            $this->info('一切就绪');
-            $this->info("管理员邮箱：{$email}");
-            $this->info("管理员密码：{$password}");
+            if($this->ask('新增管理员账户?(y or n) default: n', 'n') == 'y')
+            {
+                $email = '';
+                while (!$email) {
+                    $email = $this->ask('请输入管理员邮箱?');
+                }
+                $password = Helper::guid(false);
+                if (!$this->registerAdmin($email, $password)) {
+                    abort(500, '管理员账号注册失败，请重试');
+                }
+                $this->info('一切就绪');
+                $this->info("管理员邮箱：{$email}");
+                $this->info("管理员密码：{$password}");
+            }
 
             $defaultSecurePath = hash('crc32b', config('app.key'));
             $this->info("访问 http(s)://你的站点/{$defaultSecurePath} 进入管理面板，你可以在用户中心修改你的密码。");
